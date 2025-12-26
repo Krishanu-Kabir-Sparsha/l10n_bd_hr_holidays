@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- ENHANCED LEAVE TYPE FORM VIEW -->
+    <record id="hr_leave_type_view_form_enhanced" model="ir.ui.view">
+        <field name="name">hr.leave.type.view.form.enhanced</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.edit_holiday_status_form"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            
+            <!-- Add enhanced settings after the visual group -->
+            <xpath expr="//group[@name='visual']" position="after">
+                <group name="enhanced_rules" string="Enhanced Leave Rules" class="mw-100 col-lg-12">
+                    <group>
+                        <field name="l10n_bd_leave_category"/>
+                        <field name="l10n_bd_is_sandwich_leave"/>
+                        <field name="l10n_bd_max_days_per_year"/>
+                        <field name="l10n_bd_min_service_required"/>
+                        <field name="l10n_bd_notice_days"/>
+                    </group>
+                    <group>
+                        <field name="l10n_bd_carryover_allowed"/>
+                        <field name="l10n_bd_carryover_max_days" invisible="not l10n_bd_carryover_allowed"/>
+                        <field name="l10n_bd_encashment_allowed"/>
+                    </group>
+                </group>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    <!-- ENHANCED LEAVE TYPE LIST VIEW -->
+    <record id="hr_leave_type_view_tree_enhanced" model="ir.ui.view">
+        <field name="name">hr.leave.type.view.tree.enhanced</field>
+        <field name="model">hr.leave.type</field>
+        <field name="inherit_id" ref="hr_holidays.view_holiday_status_normal_tree"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            
+            <xpath expr="//field[@name='display_name']" position="after">
+                <field name="l10n_bd_leave_category" string="Category" widget="badge" optional="show"/>
+                <field name="l10n_bd_is_sandwich_leave" string="Sandwich" optional="show"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>

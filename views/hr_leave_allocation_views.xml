@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- ENHANCED ALLOCATION FORM VIEW -->
+    <record id="hr_leave_allocation_view_form_enhanced" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.view.form.enhanced</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_form"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            
+            <!-- Add fiscal year and source -->
+            <xpath expr="//group[@name='alloc_right_col']" position="inside">
+                <field name="l10n_bd_fiscal_year" readonly="1" string="Fiscal Year"/>
+                <field name="l10n_bd_allocation_source" readonly="state == 'validate'" groups="hr_holidays.group_hr_holidays_user"/>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    <!-- ENHANCED ALLOCATION LIST VIEW -->
+    <record id="hr_leave_allocation_view_tree_enhanced" model="ir.ui.view">
+        <field name="name">hr.leave.allocation.view.tree.enhanced</field>
+        <field name="model">hr.leave.allocation</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_allocation_view_tree"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            
+            <!-- Add fiscal year column -->
+            <xpath expr="//field[@name='allocation_type']" position="after">
+                <field name="l10n_bd_fiscal_year" string="FY" optional="show"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>

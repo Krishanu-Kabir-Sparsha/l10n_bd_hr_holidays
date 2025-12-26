@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- LEAVE REFUSE WIZARD FORM -->
+    <record id="hr_leave_refuse_wizard_view_form" model="ir.ui.view">
+        <field name="name">hr.leave.refuse.wizard.view.form</field>
+        <field name="model">hr.leave.refuse.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Refuse Leave Request">
+                <group>
+                    <field name="leave_id" invisible="1"/>
+                    <field name="employee_id" readonly="1"/>
+                    <field name="refuse_reason" widget="radio"/>
+                    <field name="refuse_notes" placeholder="Enter additional details..." widget="text"/>
+                </group>
+                <footer>
+                    <button string="Refuse Leave" name="action_refuse" type="object" class="btn-primary"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</odoo>

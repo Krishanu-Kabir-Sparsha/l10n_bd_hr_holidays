@@ -1,0 +1,173 @@
+/* ============================================ */
+/* BANGLADESH LEAVE DASHBOARD STYLES */
+/* ============================================ */
+
+/* Enhanced Leave Card Styling */
+.o_hr_leave_form .o_hr_leave_column {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Leave Status Badges */
+.o_hr_leave_form .badge {
+    font-size: 0.85em;
+    padding: 6px 12px;
+    border-radius: 20px;
+}
+
+/* Friday Warning Alert */
+.o_hr_leave_form .alert-info {
+    background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+    border: none;
+    border-left: 4px solid #17a2b8;
+    border-radius: 8px;
+}
+
+/* Quick Approve Button */
+.o_hr_leave_form .btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.o_hr_leave_form .btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+/* Refuse Button */
+.o_hr_leave_form .btn-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    border: none;
+    border-radius: 25px;
+    padding: 8px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.o_hr_leave_form .btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+/* Leave Type Selection */
+.o_hr_leave_form .o_field_many2one .o_input {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.3s ease;
+}
+
+.o_hr_leave_form .o_field_many2one .o_input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+/* Date Range Picker Enhancement */
+.o_hr_leave_form .o_field_daterange {
+    background: #fff;
+    border-radius: 8px;
+    padding: 8px 12px;
+    border: 2px solid #e9ecef;
+}
+
+/* Kanban Card Enhancements */
+.o_kanban_view .o_kanban_record {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: all 0.3s ease;
+}
+
+.o_kanban_view .o_kanban_record:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+}
+
+/* Leave Balance Display */
+.o_leave_balance_card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin: 8px;
+}
+
+.o_leave_balance_card .balance-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+.o_leave_balance_card .balance-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Calendar Friday Highlighting */
+.fc-day-fri {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.fc-day-fri .fc-daygrid-day-number {
+    color: #856404;
+    font-weight: 600;
+}
+
+/* List View Enhancements */
+.o_list_view .o_data_row {
+    transition: background-color 0.2s ease;
+}
+
+.o_list_view .o_data_row:hover {
+    background-color: rgba(0, 123, 255, 0.05);
+}
+
+/* Status Badge Colors */
+.o_list_view .badge.text-bg-success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%) !important;
+}
+
+.o_list_view .badge.text-bg-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #ffcd39 100%) !important;
+    color: #212529 !important;
+}
+
+.o_list_view .badge.text-bg-danger {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .o_hr_leave_form .o_hr_leave_column {
+        margin: 5px;
+        padding: 15px;
+    }
+    
+    .o_leave_balance_card {
+        padding: 16px;
+    }
+    
+    .o_leave_balance_card .balance-number {
+        font-size: 2rem;
+    }
+}
+
+/* Animation for approval actions */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.o_hr_leave_form button[name="action_approve_quick"] {
+    animation: pulse 2s infinite;
+}
+
+.o_hr_leave_form button[name="action_approve_quick"]:hover {
+    animation: none;
+}
