@@ -9,17 +9,23 @@
         <field name="priority">50</field>
         <field name="arch" type="xml">
             
-            <!-- Add sandwich leave warning -->
-            <xpath expr="//sheet" position="inside">
-                <div class="alert alert-info" role="alert" invisible="not l10n_bd_contains_sandwich_leaves">
-                    <strong>Note:</strong> The requested time considers the sandwich leave policy.
-                    Weekends/holidays between leave days are counted.
-                </div>
-            </xpath>
-            
-            <!-- Add hidden field for sandwich -->
+            <!-- Add related field for sandwich check -->
             <xpath expr="//field[@name='leave_type_request_unit']" position="after">
+                <field name="l10n_bd_is_sandwich_type" invisible="1"/>
                 <field name="l10n_bd_contains_sandwich_leaves" invisible="1"/>
+            </xpath>
+
+            <!-- Override holiday_status_id to show ALL leave types -->
+            <!-- <xpath expr="//field[@name='holiday_status_id']" position="attributes">
+                <attribute name="domain">[('company_id', 'in', [employee_company_id, False])]</attribute>
+            </xpath> -->
+            
+            <!-- Add sandwich leave warning - DYNAMIC based on leave type -->
+            <xpath expr="//div[@name='duration_warning']" position="before">
+                <div class="alert alert-info my-2" role="alert" invisible="not l10n_bd_is_sandwich_type">
+                    <i class="fa fa-info-circle"/>
+                    <strong> Sandwich Rule Active: </strong> For this leave type, weekends and public holidays falling between consecutive leave days will be included in the duration calculation.
+                </div>
             </xpath>
             
             <!-- Add quick action buttons -->
@@ -42,11 +48,6 @@
                         groups="hr_holidays.group_hr_holidays_responsible"/>
             </xpath>
             
-            <!-- Add leave category after holiday_status_id -->
-            <xpath expr="//field[@name='holiday_status_id']" position="after">
-                <field name="l10n_bd_leave_category" readonly="1" widget="badge"/>
-            </xpath>
-            
         </field>
     </record>
     
@@ -58,33 +59,9 @@
         <field name="priority">50</field>
         <field name="arch" type="xml">
             
-            <!-- Add leave category column -->
-            <xpath expr="//field[@name='holiday_status_id']" position="after">
-                <field name="l10n_bd_leave_category" string="Category" widget="badge" optional="show"/>
-            </xpath>
-            
-        </field>
-    </record>
-    
-    <!-- ENHANCED SEARCH VIEW -->
-    <record id="hr_leave_view_search_enhanced" model="ir.ui.view">
-        <field name="name">hr.leave.view.search.enhanced</field>
-        <field name="model">hr.leave</field>
-        <field name="inherit_id" ref="hr_holidays.view_hr_holidays_filter"/>
-        <field name="priority">50</field>
-        <field name="arch" type="xml">
-            
-            <!-- Add category filters -->
-            <xpath expr="//filter[@name='my_leaves']" position="after">
-                <separator/>
-                <filter string="Annual Leave" name="filter_annual" domain="[('l10n_bd_leave_category', '=', 'annual')]"/>
-                <filter string="Casual Leave" name="filter_casual" domain="[('l10n_bd_leave_category', '=', 'casual')]"/>
-                <filter string="Sick Leave" name="filter_sick" domain="[('l10n_bd_leave_category', '=', 'sick')]"/>
-            </xpath>
-            
-            <!-- Add group by category -->
-            <xpath expr="//filter[@name='group_type']" position="after">
-                <filter string="Leave Category" name="group_category" context="{'group_by': 'l10n_bd_leave_category'}"/>
+            <!-- Add sandwich indicator -->
+            <xpath expr="//field[@name='duration_display']" position="after">
+                <field name="l10n_bd_is_sandwich_type" string="Sandwich" widget="boolean" optional="hide"/>
             </xpath>
             
         </field>
