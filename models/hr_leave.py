@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 from odoo import models, fields, api, _
-from odoo.exceptions import UserError, AccessError
+from odoo.exceptions import UserError, AccessError, ValidationError
 
 
 class HrLeave(models.Model):
@@ -42,14 +42,45 @@ class HrLeave(models.Model):
             )
 
     # ========================================
+    # VALIDATION - NOTICE DAYS
+    # ========================================
+    
+    @api.constrains('request_date_from', 'holiday_status_id')
+    def _check_notice_days(self):
+        """Validate that leave request meets minimum notice days requirement"""
+        for leave in self:
+            if not leave.holiday_status_id or not leave.request_date_from:
+                continue
+            
+            notice_days = leave.holiday_status_id.l10n_bd_notice_days
+            if not notice_days or notice_days <= 0:
+                continue
+            
+            # Calculate days between today and leave start date
+            today = date.today()
+            leave_start = leave.request_date_from
+            
+            if isinstance(leave_start, datetime):
+                leave_start = leave_start.date()
+            
+            days_advance = (leave_start - today).days
+            
+            if days_advance < notice_days:
+                raise ValidationError(
+                    _('Leave type "%(leave_type)s" requires at least %(notice)s days advance notice.'
+                      'Your leave starts in %(days)s days.') % {
+                        'leave_type': leave.holiday_status_id.name,
+                        'notice': notice_days,
+                        'days': max(0, days_advance),
+                    }
+                )
+
+    # ========================================
     # SANDWICH LEAVE LOGIC
     # ========================================
     
     def _l10n_bd_apply_sandwich_rule(self, public_holidays, employee_leaves):
-        """
-        Apply sandwich leave rule - if leave is adjacent to weekends/holidays,
-        those days are counted as leave too.
-        """
+        """Apply sandwich leave rule"""
         self.ensure_one()
         
         if not self.request_date_from or not self.request_date_to:
@@ -58,7 +89,7 @@ class HrLeave(models.Model):
         date_from = self.request_date_from
         date_to = self.request_date_to
         
-        if date_from > date_to:
+        if date_from > date_to: 
             return 0
             
         total_leaves = (date_to - date_from).days + 1
@@ -105,7 +136,7 @@ class HrLeave(models.Model):
                     for leave in employee_leaves:
                         leave_from = leave.get('request_date_from')
                         leave_to = leave.get('request_date_to')
-                        if leave_from and leave_to:
+                        if leave_from and leave_to: 
                             if leave_from <= current_date <= leave_to: 
                                 return days_count
                     return 0
@@ -167,7 +198,7 @@ class HrLeave(models.Model):
                     updated_days = leave._l10n_bd_apply_sandwich_rule(public_holidays, emp_leaves)
                     if updated_days and updated_days != days:
                         result[leave.id] = (updated_days, hours)
-                except Exception:
+                except Exception: 
                     pass
         
         return result
@@ -192,7 +223,7 @@ class HrLeave(models.Model):
             if current_user == leave_manager:
                 return True
             raise AccessError(
-                _('Only %s (the Time Off Approver) can approve this leave request.') % 
+                _('Only %s (the Leave Approver) can approve this leave request.') % 
                 (leave_manager.name if leave_manager else 'the assigned manager')
             )
         
@@ -204,11 +235,11 @@ class HrLeave(models.Model):
             )
         
         if validation_type == 'both': 
-            if self.state == 'confirm':
+            if self.state == 'confirm': 
                 if current_user == leave_manager:
                     return True
                 raise AccessError(
-                    _('First approval must be done by %s (the Time Off Approver).') % 
+                    _('First approval must be done by %s (the Leave Approver).') % 
                     (leave_manager.name if leave_manager else 'the assigned manager')
                 )
             elif self.state == 'validate1':
@@ -248,7 +279,7 @@ class HrLeave(models.Model):
     def action_approve_quick(self):
         """Quick approve action"""
         self.ensure_one()
-        if self.state != 'confirm':
+        if self.state != 'confirm': 
             raise UserError(_('Only pending leaves can be approved.'))
         return self.action_approve()
     

@@ -33,6 +33,9 @@ Key Features:
     'data': [
         # Security
         'security/ir.model.access.csv',
+
+        # Data
+        'data/ir_cron_data.xml',
         
         # Views
         'views/hr_leave_views.xml',
@@ -42,6 +45,7 @@ Key Features:
         
         # Wizards
         'wizard/hr_leave_refuse_wizard_views.xml',
+        'wizard/hr_leave_carryover_wizard_views.xml',
     ],
     'installable': True,
     'auto_install': False,
