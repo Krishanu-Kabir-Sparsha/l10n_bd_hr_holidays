@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- ============================================ -->
+    <!-- USER FORM - Update Leave settings section -->
+    <!-- ============================================ -->
+    
+    <!-- Rename the Time Off field label in Users form -->
+    <record id="base.field_res_users__groups_id" model="ir.model.fields">
+        <!-- This won't work directly, we need to use view inheritance -->
+    </record>
+    
+    <!-- Add Recommender and Forwarder fields to user profile linked employee -->
+    <record id="res_users_view_form_profile_enhanced" model="ir.ui.view">
+        <field name="name">res.users.view.form.profile.leave.enhanced</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="hr.res_users_view_form_profile"/>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            
+            <!-- Add Recommender and Forwarder after leave_manager_id if it exists -->
+            <xpath expr="//field[@name='leave_manager_id']" position="after">
+                <field name="leave_recommender_id" readonly="not can_edit" widget="many2one_avatar_user" 
+                       groups="hr_holidays.group_hr_holidays_user"/>
+                <field name="leave_forwarder_id" readonly="not can_edit" widget="many2one_avatar_user"
+                       groups="hr_holidays.group_hr_holidays_user"/>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
+    <!-- ============================================ -->
     <!-- ENHANCED LEAVE REQUEST FORM VIEW -->
+    <!-- ============================================ -->
+    
     <record id="hr_leave_view_form_enhanced" model="ir.ui.view">
         <field name="name">hr.leave.view.form.enhanced</field>
         <field name="model">hr.leave</field>
@@ -9,33 +12,55 @@
         <field name="priority">50</field>
         <field name="arch" type="xml">
             
-            <!-- Add related field for sandwich check -->
+            <!-- Add new fields for button visibility -->
             <xpath expr="//field[@name='leave_type_request_unit']" position="after">
                 <field name="l10n_bd_is_sandwich_type" invisible="1"/>
                 <field name="l10n_bd_contains_sandwich_leaves" invisible="1"/>
-            </xpath>
-
-            <!-- Override holiday_status_id to show ALL leave types -->
-            <!-- <xpath expr="//field[@name='holiday_status_id']" position="attributes">
-                <attribute name="domain">[('company_id', 'in', [employee_company_id, False])]</attribute>
-            </xpath> -->
-            
-            <!-- Add sandwich leave warning - DYNAMIC based on leave type -->
-            <xpath expr="//div[@name='duration_warning']" position="before">
-                <div class="alert alert-info my-2" role="alert" invisible="not l10n_bd_is_sandwich_type">
-                    <i class="fa fa-info-circle"/>
-                    <strong> Sandwich Rule Active: </strong> For this leave type, weekends and public holidays falling between consecutive leave days will be included in the duration calculation.
-                </div>
+                <field name="l10n_bd_can_recommend" invisible="1"/>
+                <field name="l10n_bd_can_forward" invisible="1"/>
+                <field name="l10n_bd_can_approve_leave" invisible="1"/>
+                <field name="l10n_bd_show_recommend_button" invisible="1"/>
+                <field name="l10n_bd_show_forward_button" invisible="1"/>
+                <field name="l10n_bd_show_skip_forward_button" invisible="1"/>
+                <field name="l10n_bd_show_approve_button" invisible="1"/>
             </xpath>
             
-            <!-- Add quick action buttons -->
+            <!-- Add workflow buttons -->
+            <xpath expr="//header/button[@name='action_approve']" position="before">
+                <button string="Recommend" 
+                        name="action_recommend" 
+                        type="object" 
+                        class="btn-info"
+                        invisible="not l10n_bd_show_recommend_button"/>
+                <button string="Forward" 
+                        name="action_forward" 
+                        type="object" 
+                        class="btn-info"
+                        invisible="not l10n_bd_show_forward_button"/>
+                <button string="Skip Forward" 
+                        name="action_skip_forward" 
+                        type="object" 
+                        class="btn-secondary"
+                        invisible="not l10n_bd_show_skip_forward_button"/>
+            </xpath>
+            
+            <!-- Add Approve button for forward state with strict access -->
+            <xpath expr="//header/button[@name='action_approve']" position="after">
+                <button string="Approve" 
+                        name="action_approve" 
+                        type="object" 
+                        class="btn-primary"
+                        invisible="not l10n_bd_show_approve_button"
+                        data-hotkey="v"/>
+            </xpath>
+            
+            <!-- Quick Approve with strict access -->
             <xpath expr="//header/button[@name='action_approve']" position="before">
                 <button string="Quick Approve" 
                         name="action_approve_quick" 
                         type="object" 
                         class="btn-success"
-                        invisible="state != 'confirm' or not can_approve"
-                        groups="hr_holidays.group_hr_holidays_responsible"/>
+                        invisible="not l10n_bd_show_approve_button"/>
             </xpath>
             
             <!-- Add refuse with reason button -->
@@ -44,14 +69,32 @@
                         name="action_refuse_with_reason" 
                         type="object" 
                         class="btn-warning"
-                        invisible="state not in ('confirm', 'validate1', 'validate') or not can_approve"
-                        groups="hr_holidays.group_hr_holidays_responsible"/>
+                        invisible="state in ('draft', 'cancel', 'refuse', 'validate')"/>
+            </xpath>
+            
+            <!-- Add sandwich leave warning inside the sheet -->
+            <xpath expr="//sheet" position="inside">
+                <div class="alert alert-info" role="alert" invisible="not l10n_bd_is_sandwich_type">
+                    <i class="fa fa-info-circle"/>
+                    <strong> Sandwich Rule Active: </strong> Weekends and public holidays between leave days will be included.
+                </div>
+            </xpath>
+            
+            <!-- Add recommendation/forward info in form -->
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="l10n_bd_recommended_by" readonly="1" invisible="not l10n_bd_recommended_by" string="Recommended By"/>
+                <field name="l10n_bd_recommended_date" readonly="1" invisible="not l10n_bd_recommended_date" string="Recommended On"/>
+                <field name="l10n_bd_forwarded_by" readonly="1" invisible="not l10n_bd_forwarded_by" string="Forwarded By"/>
+                <field name="l10n_bd_forwarded_date" readonly="1" invisible="not l10n_bd_forwarded_date" string="Forwarded On"/>
             </xpath>
             
         </field>
     </record>
     
+    <!-- ============================================ -->
     <!-- ENHANCED LEAVE LIST VIEW -->
+    <!-- ============================================ -->
+    
     <record id="hr_leave_view_tree_enhanced" model="ir.ui.view">
         <field name="name">hr.leave.view.tree.enhanced</field>
         <field name="model">hr.leave</field>
@@ -59,9 +102,30 @@
         <field name="priority">50</field>
         <field name="arch" type="xml">
             
-            <!-- Add sandwich indicator -->
             <xpath expr="//field[@name='duration_display']" position="after">
                 <field name="l10n_bd_is_sandwich_type" string="Sandwich" widget="boolean" optional="hide"/>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    <!-- ============================================ -->
+    <!-- ENHANCED SEARCH VIEW -->
+    <!-- ============================================ -->
+    
+    <record id="hr_leave_view_search_enhanced" model="ir.ui.view">
+        <field name="name">hr.leave.view.search.enhanced</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.view_hr_holidays_filter"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            
+            <!-- Add filters for new states -->
+            <xpath expr="//filter[@name='approve']" position="after">
+                <filter string="To Recommend" name="to_recommend" domain="[('state', '=', 'confirm'), ('holiday_status_id.l10n_bd_require_recommendation', '=', True)]"/>
+                <filter string="Recommended" name="recommended" domain="[('state', '=', 'recommend')]"/>
+                <filter string="To Forward" name="to_forward" domain="[('state', '=', 'recommend'), ('holiday_status_id.l10n_bd_require_forward', '=', True)]"/>
+                <filter string="Forwarded (To Approve)" name="forwarded" domain="[('state', '=', 'forward')]"/>
             </xpath>
             
         </field>

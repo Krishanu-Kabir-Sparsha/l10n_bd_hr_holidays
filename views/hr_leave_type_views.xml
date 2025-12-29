@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-    <!-- ENHANCED LEAVE TYPE FORM VIEW - Add fields to Configuration section -->
+    <!-- ============================================ -->
+    <!-- ENHANCED LEAVE TYPE FORM VIEW -->
+    <!-- ============================================ -->
+    
     <record id="hr_leave_type_view_form_enhanced" model="ir.ui.view">
         <field name="name">hr.leave.type.view.form.enhanced</field>
         <field name="model">hr.leave.type</field>
@@ -9,19 +12,47 @@
         <field name="priority">50</field>
         <field name="arch" type="xml">
             
-            <!-- Add fields inside Configuration group -->
+            <!-- Rename TIME OFF REQUESTS to LEAVE REQUESTS -->
+            <xpath expr="//group[@name='leave_validation']" position="attributes">
+                <attribute name="string">Leave Requests</attribute>
+            </xpath>
+            
+            <!-- Add workflow configuration after leave_validation group -->
+            <xpath expr="//group[@name='leave_validation']" position="after">
+                <group name="workflow_config" string="Workflow Configuration">
+                    <field name="l10n_bd_require_recommendation"/>
+                    <field name="l10n_bd_recommender_ids" widget="many2many_tags" 
+                           invisible="not l10n_bd_require_recommendation"
+                           placeholder="Leave empty to use employee's recommender"/>
+                    <field name="l10n_bd_require_forward"/>
+                    <field name="l10n_bd_forwarder_ids" widget="many2many_tags" 
+                           invisible="not l10n_bd_require_forward"
+                           placeholder="Leave empty to use employee's forwarder"/>
+                </group>
+            </xpath>
+            
+            <!-- Add enhanced rules in Configuration section -->
             <xpath expr="//group[@name='configuration']" position="inside">
                 <field name="l10n_bd_is_sandwich_leave"/>
                 <field name="l10n_bd_max_days_per_year"/>
                 <field name="l10n_bd_notice_days"/>
                 <field name="l10n_bd_carryover_allowed"/>
                 <field name="l10n_bd_carryover_max_days" invisible="not l10n_bd_carryover_allowed"/>
+                <field name="l10n_bd_carryover_expiry_months" invisible="not l10n_bd_carryover_allowed"/>
+            </xpath>
+            
+            <!-- Rename field labels -->
+            <xpath expr="//field[@name='responsible_ids']" position="attributes">
+                <attribute name="placeholder">Notified Leave Officers</attribute>
             </xpath>
             
         </field>
     </record>
     
+    <!-- ============================================ -->
     <!-- ENHANCED LEAVE TYPE LIST VIEW -->
+    <!-- ============================================ -->
+    
     <record id="hr_leave_type_view_tree_enhanced" model="ir.ui.view">
         <field name="name">hr.leave.type.view.tree.enhanced</field>
         <field name="model">hr.leave.type</field>
@@ -30,8 +61,9 @@
         <field name="arch" type="xml">
             
             <xpath expr="//field[@name='display_name']" position="after">
-                <field name="l10n_bd_is_sandwich_leave" string="Sandwich Rule" optional="show"/>
-                <field name="l10n_bd_max_days_per_year" string="Max Days/Year" optional="hide"/>
+                <field name="l10n_bd_require_recommendation" string="Recommendation" optional="show"/>
+                <field name="l10n_bd_require_forward" string="Forward" optional="show"/>
+                <field name="l10n_bd_is_sandwich_leave" string="Sandwich" optional="show"/>
             </xpath>
             
         </field>

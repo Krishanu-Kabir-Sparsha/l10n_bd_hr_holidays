@@ -1,0 +1,44 @@
+# Translation file for renaming Time Off to Leaves
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-01 00:00+0000\n"
+"PO-Revision-Date: 2025-01-01 00:00+0000\n"
+"Language:  en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+msgid "Time Off"
+msgstr "Leaves"
+
+msgid "Time Off Type"
+msgstr "Leave Type"
+
+msgid "Time Off Types"
+msgstr "Leave Types"
+
+msgid "Time Off Officer"
+msgstr "Leave Officer"
+
+msgid "Time Off Requests"
+msgstr "Leave Requests"
+
+msgid "My Time Off"
+msgstr "My Leaves"
+
+msgid "By Time Off Officer"
+msgstr "By Leave Officer"
+
+msgid "By Employee's Approver and Time Off Officer"
+msgstr "By Employee's Approver and Leave Officer"
+
+msgid "Notified Time Off Officer"
+msgstr "Notified Leave Officer"
+
+msgid "Take Time Off in"
+msgstr "Take Leave in"
+
+msgid "Kind of Time Off"
+msgstr "Kind of Leave"

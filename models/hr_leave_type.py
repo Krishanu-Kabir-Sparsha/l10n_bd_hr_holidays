@@ -6,6 +6,40 @@ class HrLeaveType(models.Model):
     _inherit = 'hr.leave.type'
     
     # ========================================
+    # WORKFLOW CONFIGURATION
+    # ========================================
+    
+    l10n_bd_require_recommendation = fields.Boolean(
+        string='Require Recommendation',
+        default=False,
+        help='If enabled, leave requests must be recommended before approval'
+    )
+    
+    l10n_bd_require_forward = fields.Boolean(
+        string='Require Forward',
+        default=False,
+        help='If enabled, leave requests must be forwarded after recommendation'
+    )
+    
+    l10n_bd_recommender_ids = fields.Many2many(
+        'res.users',
+        'hr_leave_type_recommender_rel',
+        'leave_type_id',
+        'user_id',
+        string='Notified Recommenders',
+        help='Users who will be notified to recommend leaves of this type'
+    )
+    
+    l10n_bd_forwarder_ids = fields.Many2many(
+        'res.users',
+        'hr_leave_type_forwarder_rel',
+        'leave_type_id',
+        'user_id',
+        string='Notified Forwarders',
+        help='Users who will be notified to forward leaves of this type'
+    )
+    
+    # ========================================
     # ENHANCED LEAVE RULES
     # ========================================
     
@@ -24,7 +58,7 @@ class HrLeaveType(models.Model):
     l10n_bd_notice_days = fields.Integer(
         string='Min Notice Days',
         default=0,
-        help='Minimum number of days in advance a leave request must be submitted.Set 0 for no restriction.'
+        help='Minimum number of days in advance a leave request must be submitted.'
     )
     
     l10n_bd_carryover_allowed = fields.Boolean(
@@ -36,16 +70,11 @@ class HrLeaveType(models.Model):
     l10n_bd_carryover_max_days = fields.Integer(
         string='Max Carryover Days',
         default=0,
-        help='Maximum days that can be carried over to next year.Set 0 for unlimited carryover.'
+        help='Maximum days that can be carried over to next year.'
     )
     
     l10n_bd_carryover_expiry_months = fields.Integer(
         string='Carryover Expiry (Months)',
         default=3,
-        help='Number of months after which carried over leaves expire.Set 0 for no expiry.'
+        help='Number of months after which carried over leaves expire.'
     )
-
-    def action_process_carryover(self):
-        """Manual action to process carryover for this leave type"""
-        self.ensure_one()
-        return self.env['hr.leave.carryover.wizard'].process_carryover_for_type(self)

@@ -3,3 +3,5 @@ access_hr_leave_refuse_wizard_responsible,hr.leave.refuse.wizard.responsible,mod
 access_hr_leave_refuse_wizard_user,hr.leave.refuse.wizard.user,model_hr_leave_refuse_wizard,hr_holidays.group_hr_holidays_user,1,1,1,1
 access_hr_leave_refuse_wizard_manager,hr.leave.refuse.wizard.manager,model_hr_leave_refuse_wizard,hr_holidays.group_hr_holidays_manager,1,1,1,1
 access_hr_leave_carryover_wizard_manager,hr.leave.carryover.wizard.manager,model_hr_leave_carryover_wizard,hr_holidays.group_hr_holidays_manager,1,1,1,1
+access_hr_leave_recommender,hr.leave.recommender,hr_holidays.model_hr_leave,l10n_bd_hr_holidays.group_hr_holidays_recommender,1,1,0,0
+access_hr_leave_forwarder,hr.leave.forwarder,hr_holidays.model_hr_leave,l10n_bd_hr_holidays.group_hr_holidays_forwarder,1,1,0,0

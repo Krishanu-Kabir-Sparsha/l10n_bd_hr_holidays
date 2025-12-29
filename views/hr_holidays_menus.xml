@@ -20,7 +20,7 @@
         <field name="name">Dashboard</field>
     </record>
     
-    <!-- My Time Off -> My Leaves -->
+    <!-- My Leaves -->
     <record id="hr_holidays.hr_leave_action_my" model="ir.actions.act_window">
         <field name="name">My Leaves</field>
     </record>
@@ -69,7 +69,7 @@
         <field name="name">Leave Analysis</field>
     </record>
     
-    <!-- Configuration > Time Off Types -> Leave Types -->
+    <!-- Configuration > Leave Types -->
     <record id="hr_holidays.hr_holidays_status_menu_configuration" model="ir.ui.menu">
         <field name="name">Leave Types</field>
     </record>
@@ -78,9 +78,9 @@
         <field name="name">Leave Types</field>
     </record>
     
-    <!-- Public Holidays menu -->
+    <!-- Public Holidays -->
     <record id="hr_holidays.hr_holidays_public_time_off_menu_configuration" model="ir.ui.menu">
         <field name="name">Public Holidays</field>
     </record>
 
-</odoo> 
+</odoo>

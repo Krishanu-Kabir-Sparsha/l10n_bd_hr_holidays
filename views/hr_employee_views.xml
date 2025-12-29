@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- ============================================ -->
+    <!-- EMPLOYEE FORM - Add Recommender & Forwarder -->
+    <!-- ============================================ -->
+    
+    <record id="hr_employee_view_form_enhanced" model="ir.ui.view">
+        <field name="name">hr.employee.view.form.leave.enhanced</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_holidays.view_employee_form_leave_inherit"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            
+            <!-- Rename Leave Manager field label -->
+            <xpath expr="//field[@name='leave_manager_id']" position="attributes">
+                <attribute name="string">Leave Approver</attribute>
+            </xpath>
+            
+            <!-- Add Recommender and Forwarder after leave_manager_id -->
+            <xpath expr="//field[@name='leave_manager_id']" position="after">
+                <field name="leave_recommender_id" widget="many2one_avatar_user"/>
+                <field name="leave_forwarder_id" widget="many2one_avatar_user"/>
+            </xpath>
+            
+        </field>
+    </record>
+    
+    <!-- ============================================ -->
+    <!-- EMPLOYEE LIST - Add columns -->
+    <!-- ============================================ -->
+    
+    <record id="hr_employee_view_tree_enhanced" model="ir.ui.view">
+        <field name="name">hr.employee.view.tree.leave.enhanced</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr_holidays.view_employee_tree_inherit_leave"/>
+        <field name="priority">50</field>
+        <field name="arch" type="xml">
+            
+            <!-- Rename Leave Manager column -->
+            <xpath expr="//field[@name='leave_manager_id']" position="attributes">
+                <attribute name="string">Leave Approver</attribute>
+            </xpath>
+            
+        </field>
+    </record>
+
+</odoo>
